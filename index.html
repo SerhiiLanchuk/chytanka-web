@@ -34,6 +34,19 @@
         <button id="model-btn" class="btn primary">Завантажити</button>
       </div>
 
+      <details class="paste" id="ai-card">
+        <summary>Переклад через Claude <span id="ai-state" class="small muted" style="display:block;font-weight:400;margin-top:2px"></span></summary>
+        <div class="paste-body">
+          <p class="small muted" style="margin:0;line-height:1.5">Claude перекладає слово саме в цьому реченні й пояснює ідіоми. Потрібен ключ Claude API (platform.claude.com) та інтернет. Ключ зберігається лише на цьому телефоні. Без ключа працюють словник і перекладач телефона.</p>
+          <input id="ai-key" class="field" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="sk-ant-…">
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button id="ai-save" class="btn primary">Зберегти ключ</button>
+            <button id="ai-remove" class="btn ghost danger" hidden>Видалити ключ</button>
+          </div>
+          <p id="ai-msg" class="small" aria-live="polite"></p>
+        </div>
+      </details>
+
       <div class="import">
         <label class="btn primary" for="file">
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>
