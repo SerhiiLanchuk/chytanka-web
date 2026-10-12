@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Читанка</title>
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Читанка">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#F5F6F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#13161B" media="(prefers-color-scheme: dark)">
+</head>
+<body>
+<div id="app">
+  <!-- БІБЛІОТЕКА -->
+  <section id="v-lib" class="view">
+    <div class="wrap">
+      <header class="top">
+        <span class="eyebrow">Бібліотека</span>
+        <h1>Читанка</h1>
+        <p class="lede">Завантажте книжку англійською. Під час читання торкніться слова, і побачите переклад. Працює без інтернету.</p>
+      </header>
+
+      <div id="model-card" class="model" hidden>
+        <div class="model-text">
+          <strong id="model-title">Переклад речень без інтернету</strong>
+          <span id="model-desc" class="small muted">Один раз завантажте перекладач (близько 30 МБ, краще через Wi-Fi). Словник для окремих слів уже вбудований.</span>
+        </div>
+        <button id="model-btn" class="btn primary">Завантажити</button>
+      </div>
+
+      <div class="import">
+        <label class="btn primary" for="file">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>
+          Додати книжку
+          <input id="file" type="file" accept=".epub,.fb2,.txt,application/epub+zip,text/plain,application/octet-stream">
+        </label>
+      </div>
+      <p id="status" class="small" aria-live="polite">Формати: EPUB, FB2, TXT</p>
+      <details class="paste">
+        <summary>Або вставити текст вручну</summary>
+        <div class="paste-body">
+          <input id="paste-title" class="field" placeholder="Назва (наприклад, The Little Prince)">
+          <textarea id="paste-text" class="field" placeholder="Вставте сюди англійський текст…"></textarea>
+          <button id="paste-add" class="btn primary">Додати в бібліотеку</button>
+        </div>
+      </details>
+      <div id="books" class="books"></div>
+      <p class="credits small muted">Словник: Wiktionary (CC BY-SA 3.0) через проєкт dmklinger/ukrainian; транскрипція: ipa-dict. Переклад речень: Google ML Kit на пристрої.</p>
+    </div>
+  </section>
+
+  <!-- ЧИТАННЯ -->
+  <section id="v-read" class="view" hidden>
+    <div class="rbar">
+      <button id="r-back" class="btn ghost" aria-label="До бібліотеки">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div id="r-title" class="r-title"></div>
+      <div class="fsz">
+        <button id="fs-down" aria-label="Менший шрифт" style="font-size:13px">A</button>
+        <button id="fs-up" aria-label="Більший шрифт" style="font-size:19px">A</button>
+      </div>
+    </div>
+    <div id="r-scroll"><div id="r-body"></div></div>
+    <div class="pager">
+      <button id="pg-prev" class="btn">‹ Назад</button>
+      <div class="pg"><span id="pg-label"></span><div class="bar"><i id="pg-bar"></i></div></div>
+      <button id="pg-next" class="btn">Далі ›</button>
+    </div>
+  </section>
+
+  <!-- СЛОВНИК -->
+  <section id="v-dict" class="view" hidden>
+    <div class="wrap">
+      <header class="top">
+        <span class="eyebrow">Мій словник</span>
+        <h1 id="d-head">Збережені слова</h1>
+      </header>
+      <div id="d-list-wrap">
+        <div class="dict-tools">
+          <input id="d-search" class="field" type="search" placeholder="Пошук слова або перекладу">
+          <button id="d-review" class="btn primary">Повторити</button>
+        </div>
+        <div id="words" class="words"></div>
+      </div>
+      <div id="review" hidden></div>
+    </div>
+  </section>
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="lib" aria-current="page">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19V5a1 1 0 0 1 1-1h4v16H5a1 1 0 0 1-1-1zM9 4h4v16H9zM14 5l4-1 3 15-4 1z"/></svg>
+      Бібліотека
+    </button>
+    <button data-tab="dict">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 3h11a1 1 0 0 1 1 1v17l-6-4-6 4V4a1 1 0 0 1 0-1z"/></svg>
+      <span>Словник <span class="count" id="tab-count"></span></span>
+    </button>
+  </nav>
+
+  <div id="scrim" hidden></div>
+  <div id="sheet" hidden role="dialog" aria-label="Переклад слова">
+    <div class="sheet-in">
+      <div class="grab"></div>
+      <div class="sh-head">
+        <div class="grow"><div id="sh-word" class="sh-word"></div><div id="sh-ipa" class="sh-ipa"></div></div>
+        <button id="sh-speak" class="round" aria-label="Вимова">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5L6 9H3v6h3l5 4zM15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+        </button>
+        <button id="sh-close" class="round" aria-label="Закрити">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div id="sh-body"></div>
+      <p id="sh-sent" class="sent"></p>
+      <div id="sh-senttr" class="sent-tr"></div>
+      <div class="sh-actions">
+        <button id="sh-save" class="btn primary">Зберегти в словник</button>
+        <button id="sh-trs" class="btn">Перекласти речення</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
