@@ -1,5 +1,5 @@
 // Згенеровано scripts/build-pwa.mjs
-const CACHE = 'chytanka-4959e9029a47';
+const CACHE = 'chytanka-c5904ee8ac7e';
 const FILES = ["./","app.js","apple-touch-icon.png","dict.json","fonts/literata-cyrillic-400-italic.woff2","fonts/literata-cyrillic-400-normal.woff2","fonts/literata-cyrillic-600-normal.woff2","fonts/literata-latin-400-italic.woff2","fonts/literata-latin-400-normal.woff2","fonts/literata-latin-600-normal.woff2","fonts/manrope-cyrillic-400-normal.woff2","fonts/manrope-cyrillic-600-normal.woff2","fonts/manrope-cyrillic-700-normal.woff2","fonts/manrope-latin-400-normal.woff2","fonts/manrope-latin-600-normal.woff2","fonts/manrope-latin-700-normal.woff2","icon-192.png","icon-512.png","icon-maskable-512.png","index.html","manifest.webmanifest","style.css"];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));

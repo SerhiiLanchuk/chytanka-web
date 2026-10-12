@@ -166,3 +166,11 @@ body{margin:0;font-size:15px;-webkit-text-size-adjust:100%}
 .chip.ghost{color:var(--muted)}
 .chip:disabled{opacity:.4;cursor:default}
 .sh-word.phrase{font-size:22px;line-height:1.25}
+
+.my-row{display:flex;flex-direction:column;gap:6px}
+.my-in{display:flex;gap:8px}
+.my-in .field{flex:1;min-width:0}
+.edit-tr{display:flex;gap:8px;margin-top:4px}
+.edit-tr .field{flex:1;min-width:0;padding:8px 10px}
+.word .side{flex-wrap:wrap;justify-content:flex-end}
+.field{font-size:16px}
