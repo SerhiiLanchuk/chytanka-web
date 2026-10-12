@@ -160,3 +160,9 @@ body{margin:0;font-size:15px;-webkit-text-size-adjust:100%}
 .mean{display:flex;gap:10px;align-items:baseline;line-height:1.4}
 .mean .p{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);min-width:3.6em}
 .src{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+.sel-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:-4px}
+.chip{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:600;color:var(--accent)}
+.chip.ghost{color:var(--muted)}
+.chip:disabled{opacity:.4;cursor:default}
+.sh-word.phrase{font-size:22px;line-height:1.25}
